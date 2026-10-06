@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json";,
+  "model": "big-pickle",
+  "provider": {
+    "opencode-zen": {
+      "type": "opencode-zen",
+      "apiKey": "{env:OPENCODE_ZEN_API_KEY}"
+    }
+  },
+  "permission": {
+    "edit": {
+      "*": "allow",
+      ".github/workflows/**": "deny",
+      "**/*.env*": "deny",
+      "**/secrets/**": "deny"
+    },
+    "bash": {
+      "*": "ask",
+      "./mvnw test*": "allow",
+      "./mvnw verify": "allow",
+      "docker compose*": "allow",
+      "rm -rf*": "deny",
+      "git push --force*": "deny"
+    }
+  }
+}

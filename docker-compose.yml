@@ -7,7 +7,7 @@ services:
       MYSQL_USER: lipariuser
       MYSQL_PASSWORD: liparipassword
     ports:
-      - "3306:3306"
+      - "3307:3306"
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpassword"]
       interval: 10s
