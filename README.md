@@ -168,3 +168,15 @@ Non è un sistema production-grade, e non pretende di esserlo: non ha circuit br
 Soprattutto: **non è un'architettura modello.** È un backend scritto come lo scrive una squadra sotto scadenza, con le scorciatoie che una squadra sotto scadenza prende. È esattamente per questo che serve: i tuoi reviewer avranno qualcosa di vero da trovare, e quello che troveranno non te l'ha suggerito nessuno.
 
 Per la stessa ragione, se lo riusi fuori dal bootcamp trattalo come codice da recensire, non come codice da mostrare.
+
+## Code Review Suite
+
+La Code Review Suite è un unico comando CLI in TypeScript che lancia i quattro reviewer del LipariBank in parallelo (Promise.all) contro un target (cartella o file) e produce un unico report Markdown consolidato.
+
+- Orchestratore: code-review-suite.ts — avvia opencode run --agent <reviewer> --format json per ciascuna lente con logging a timestamp e parallelismo verificabile.
+- Quattro lenti: reviewer-movimenti, reviewer-importi, reviewer-api, reviewer-prestazioni — mode: all, permissions: V2, name nel frontmatter.
+- Riconciliazione gravità: gravità adottata = massimo fra le lenti; conflitti dichiarati; tutti i campi conservati.
+- Motivazioni: 4 vs 6 (aggiunta lente prestazioni); punti di rottura: reviewer mancante, uscita non interpretabile, tetto superato, cartella sbagliata.
+- Budget/tetti: token, durata, costo; watchdog che interrompe realmente.
+- Uso: node code-review-suite.ts <target> [--out review-report.md] [--log review-run.log] [--max-seconds 600] [--max-tokens 400000] [--gate HIGH] [--reviewers a,b,c]
+
