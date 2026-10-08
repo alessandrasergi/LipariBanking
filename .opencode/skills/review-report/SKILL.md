@@ -1,13 +1,14 @@
 ---
 name: review-report
-description: Formato unico di uscita dei tre reviewer del LipariBank (reviewer-movimenti, reviewer-importi, reviewer-api). Usala quando produci una review: ogni rilievo ha file, riga, gravità, conseguenza e correzione proposta, mai applicata.
+description: Formato unico di uscita dei quattro reviewer del LipariBank (reviewer-movimenti, reviewer-importi, reviewer-api, reviewer-prestazioni). Usalo quando produci una review: ogni rilievo ha file, riga, gravità, conseguenza e correzione proposta, mai applicata.
 allowed-tools: [Read, Grep, Glob]
 ---
 
 # review-report — il formato di uscita dei reviewer
 
-Questa skill fissa il formato di uscita, ed è **la stessa per tutti e tre i reviewer**:
-`reviewer-movimenti`, `reviewer-importi`, `reviewer-api`. Nessun rilievo esce in un altro formato.
+Questa skill fissa il formato di uscita, ed è **la stessa per tutti e quattro i reviewer**:
+`reviewer-movimenti`, `reviewer-importi`, `reviewer-api`, `reviewer-prestazioni`. Nessun
+rilievo esce in un altro formato.
 
 ## Regole non negoziabili
 

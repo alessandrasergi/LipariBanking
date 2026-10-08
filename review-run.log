@@ -1,0 +1,12 @@
+[16:07:18.360] === code-review-suite: target=src/main/java/com/lipari/bank commit=1ed1884 reviewer=4 ===
+[16:07:18.370] tetti: durata=600s token=400000 — al superamento si interrompe, non si prosegue
+[16:07:18.375] [reviewer-movimenti] START  opencode run --agent reviewer-movimenti --format json
+[16:07:18.392] [reviewer-importi] START  opencode run --agent reviewer-importi --format json
+[16:07:18.423] [reviewer-api] START  opencode run --agent reviewer-api --format json
+[16:07:18.452] [reviewer-prestazioni] START  opencode run --agent reviewer-prestazioni --format json
+[16:17:19.247] TETTO SUPERATO: tetto di durata superato (600s) — interrompo i processi
+[16:17:19.683] [reviewer-movimenti] END failed — tetto di durata superato (600s) — processo ucciso [16:07:18.375 → 16:17:19.653]
+[16:17:19.699] [reviewer-importi] END failed — tetto di durata superato (600s) — processo ucciso [16:07:18.392 → 16:17:19.658]
+[16:17:19.713] [reviewer-api] END failed — tetto di durata superato (600s) — processo ucciso [16:07:18.423 → 16:17:19.683]
+[16:17:19.728] [reviewer-prestazioni] END failed — tetto di durata superato (600s) — processo ucciso [16:07:18.452 → 16:17:19.676]
+[16:17:19.860] report scritto in review-report.md — findings 0 grezzi → 0 unici — esito INTORROTTO — tetto di durata superato (600s) — exit 3
