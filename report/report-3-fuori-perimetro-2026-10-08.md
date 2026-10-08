@@ -90,5 +90,6 @@ sessioni di subagent (nessuna riga di reviewer nei log della sessione).
 ## Riferimenti
 
 - File: `.opencode/agent/reviewer-{movimenti,importi,api}.md`
+- Banco negativo: `docs/test-cases/negative-cases.md` — 24 richieste in cui nessuno dei tre deve partire (8 per reviewer: 4 fuori tema, 4 ambigue); gli esiti delle esecuzioni si aggiungono qui
 - README § "La regola con cui ho separato i perimetri" (riga "Nessuno dei tre")
 - Report collegati: 1 (disgiunzione), 2 (partenza), 6 (run trace)
