@@ -112,6 +112,8 @@ Gli artefatti che governano gli agent, dove stanno e come si invocano. Il codice
 | `reviewer-importi` | `.opencode/agent/reviewer-importi.md` | Idem, sul perimetro saldi/conti/clienti/AML. |
 | `reviewer-api` | `.opencode/agent/reviewer-api.md` | Idem, sul perimetro sicurezza/endpoint REST. |
 | Skill `review-report` | `.opencode/skills/review-report/SKILL.md` | Formato di uscita unico dei tre: il reviewer la legge con `Read` all'inizio della review; in OpenCode si carica anche con `@review-report`. |
+| Skill `compliance-aml-check` | `.opencode/skills/compliance-aml-check/SKILL.md` | I cinque controlli AML ereditati da Gino: `reviewer-importi` la applica quando la richiesta tocca soglie, PEP o watchlist (check 7). |
+| Note di Gino | `README-GINO.md` | Il punto di partenza della consegna, copiato integrale dallo starter del collega e lasciato invariato. |
 | Permissioni dei reviewer | `.opencode/agent/reviewer-*.md` | `edit: deny`, `bash: deny`, `task: deny`, `webfetch: deny` nel frontmatter: con OpenCode il divieto di scrittura è nelle permissioni, non solo nei prompt. |
 | Guard di scrittura (ex hook Claude Code) | `.opencode/scripts/guard-reviewer-write.py` | **Non montato**: era l'hook `PreToolUse` di `.claude/settings.json`, cartella eliminata. Con OpenCode il presidio è nelle permissioni qui sopra; lo script resta per la prova qui sotto. |
 | Audit strumenti (ex hook Claude Code) | `.opencode/scripts/log-tool.py` | **Non montato**: l'hook `PostToolUse` esisteva solo in Claude Code. Gli eventi finiscono in `~/.claude-audit/` quando Claude Code monta l'hook. |
@@ -143,13 +145,19 @@ Il perimetro decide il file, non le parole della richiesta: un file che contiene
 
 ### Cosa ho cambiato di quello che ho ereditato
 
-| Cosa ho ereditato | Cosa ho cambiato | Perché |
+Base della consegna: lo starter del collega (`starter_collega_giorno_01.zip` → `README-GINO.md` + `.claude/`), il "punto da cui parte la consegna".
+
+| Cosa ho ereditato (starter del collega) | Cosa ho cambiato | Perché, una riga |
 |---|---|---|
-| `.claude/settings.json` (hook `PreToolUse`/`PostToolUse` di Claude Code) | **Eliminata con tutta la cartella `.claude/`** | Il lavoro doveva stare in `.opencode/`: gli hook Claude Code non hanno equivalente qui e il divieto di scrittura è presidiato dalle permissioni dei tre agent |
-| `.claude/skills/review-report/` e `.claude/scripts/` (guard, test-guard, log-tool, audit-query) | **Spostati in `.opencode/skills/` e `.opencode/scripts/`** | Un solo posto per il lavoro: skill e script hanno trovato la loro casa nativa in `.opencode/` |
-| `.claude/agents/code-reviewer.md` e `.opencode/agent/code-reviewer.md` (un reviewer generico unico) | **Eliminati** | Un solo reviewer generico non aveva perimetro: rimpiazzati dai tre con descrizioni disgiunte |
+| `README-GINO.md` | **Copiato integrale, invariato** | È l'input di Gino: i path `it/lipari/bank/domain/…` che cita sono esempi del suo layout, non vanno "corretti" |
+| `.claude/skills/compliance-aml-check/` con `allowed-tools: [Read, Grep, Glob, Edit, Write, Bash]` | **Spostata in `.opencode/skills/` e ridotta a `[Read, Grep, Glob]`** | Il reviewer deve solo leggere: gli strumenti di scrittura nella skill contraddicevano il divieto di modifica |
+| `.claude/agents/code-reviewer.md` (generico, `tools: ["*"]`, output JSON) | **Sostituito dai tre reviewer** in `.opencode/agent/` | Un solo reviewer con tutti i tool non aveva perimetro e poteva scrivere: tre con descrizioni disgiunte e sola lettura |
+| `.claude/settings.json` (hook `PostToolUse` → `log-tool.py`) + `.claude/scripts/log-tool.py` | **Log riscritto, hook non più montato** | Il log piatto di Gino era ingestibile (suo stesso rimpianto): riscritto in JSONL con indice e rotazione; con OpenCode il presidio è nelle permissioni, non negli hook |
+| `.claude/` (intera cartella, presente anche nel repo) | **Eliminata, tutto in `.opencode/`** | Il lavoro doveva stare nella cartella di OpenCode: agent, skill e script hanno la loro casa nativa lì |
 | `.opencode/opencode.json` (`$schema` con `";,`, `model: big-pickle`) | **Corretti entrambi** | La riga di schema non era JSON valido e `big-pickle` senza prefisso provider non esisteva: OpenCode non partiva |
 | `src/**`, `pom.xml`, `Dockerfile`, `docker-compose.yml` | **Invariati** | La codebase bersaglio resta intatta: i reviewer devono trovare i difetti da soli |
+
+Cosa ho ereditato e non c'era nello starter ma è mio strumento: `.opencode/scripts/guard-reviewer-write.py` + `test-guard-reviewer-write.py` (la prova del blocco scrittura), `audit-query.py` (interrogatorio dell'audit) e la skill `review-report` (formato unico d'uscita).
 
 ---
 

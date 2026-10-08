@@ -40,6 +40,7 @@ Il perimetro decide tu, non le parole della richiesta: se ti chiedono di un file
 4. **Audit trail degli importi** — `correlationId`, `userId`, `ipAddress`, `executedAt` disponibili dove l'importo viene registrato.
 5. **Schema e seed** — DECIMAL con precisione/scale adeguati, nullability giusta, dati di esempio coerenti con le soglie.
 6. **Config in chiaro** — in `application.yml` nessun secret letterale: secret JWT, credenziali DB e chiavi API solo come riferimenti a variabili d'ambiente (`${...}`), mai valori in chiaro.
+7. **Controlli AML specialistici** — quando la richiesta tocca soglie, PEP, watchlist o pattern di operazioni sospette, applica la skill `.opencode/skills/compliance-aml-check/SKILL.md` (leggila con Read): è il checklist dei cinque controlli antiriciclaggio di Gino, e il suo output segue il formato unico di `review-report`.
 
 ## Formato di uscita
 
