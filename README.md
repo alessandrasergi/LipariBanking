@@ -2,7 +2,7 @@
 
 Backend REST Spring Boot 3.3 su Java 21, con i tre concetti minimi di una banca: `Customer`, `Account`, `Movement`. Gira, ha un database vero e un'autenticazione vera, ed è la codebase che i tuoi agent leggeranno, recensiranno e interrogheranno per tre giorni.
 
-Il bootcamp **non insegna Spring e non ti chiede di scrivere Java**. Questo progetto è il bersaglio: quello che scrivi tu sta in `.claude/`, in `.opencode/` e negli script che orchestrano gli agent. Il LipariBank è ciò su cui li fai lavorare.
+Il bootcamp **non insegna Spring e non ti chiede di scrivere Java**. Questo progetto è il bersaglio: quello che scrivi tu sta in `.opencode/` e negli script che orchestrano gli agent. Il LipariBank è ciò su cui li fai lavorare.
 
 Se arrivi dal Bootcamp Microservizi del catalogo Lipari e hai il tuo LipariBank Multi-Service, usa quello: è più ricco e va benissimo. Questo serve a chi arriva senza un progetto banking in mano, e nessuna giornata dà per scontato che tu abbia l'uno o l'altro.
 
@@ -100,26 +100,26 @@ git commit -m "LipariBank: punto di partenza del bootcamp"
 
 ---
 
-## Claude Code Assets
+## Agent Assets
 
-Gli artefatti che governano gli agent, dove stanno e come si invocano. Il codice Java non c'entra: qui documenti quello che sta in `.claude/` e `.opencode/`.
+Gli artefatti che governano gli agent, dove stanno e come si invocano. Il codice Java non c'entra: qui documenti quello che sta in `.opencode/`. Il corso era pensato per Claude Code, ma tutto il lavoro vive in `.opencode/`: la cartella `.claude/` è stata eliminata.
 
 ### Gli artefatti, con percorso e invocazione
 
 | Artefatto | Percorso | Invocazione |
 |---|---|---|
-| `reviewer-movimenti` | `.claude/agents/reviewer-movimenti.md` | Parte **da solo**: la sua `description` dice in quali richieste interviene e in quali no. Nessuno lo nomina. |
-| `reviewer-importi` | `.claude/agents/reviewer-importi.md` | Idem, sul perimetro saldi/conti/clienti/AML. |
-| `reviewer-api` | `.claude/agents/reviewer-api.md` | Idem, sul perimetro sicurezza/endpoint REST. |
-| Skill `review-report` | `.claude/skills/review-report/SKILL.md` | Formato di uscita unico dei tre: il reviewer la legge con `Read` all'inizio della review (in Claude Code è anche invocabile con `/review-report`). |
-| Hook `PreToolUse` — divieto di scrittura | `.claude/settings.json` + `.claude/scripts/guard-reviewer-write.py` | Scatta **da solo** prima di ogni `Edit\|Write\|NotebookEdit\|MultiEdit\|Bash` e nega l'operazione solo quando il chiamante è uno dei tre reviewer. |
-| Hook `PostToolUse` — audit strumenti | `.claude/settings.json` + `.claude/scripts/log-tool.py` | Scatta da solo dopo ogni strumento e scrive in `~/.claude-audit/` (un file JSONL per sessione). |
-| Interrogatorio dell'audit | `.claude/scripts/audit-query.py` | `python .claude/scripts/audit-query.py --latest --summary` |
-| Prova del presidio | `.claude/scripts/test-guard-reviewer-write.py` | `python .claude/scripts/test-guard-reviewer-write.py [output.md]` → evidenza in `docs/run-traces/02-write-block.md` |
-| Permissioni dei reviewer (OpenCode) | `.opencode/agent/reviewer-*.md` | `edit: deny`, `bash: deny`, `task: deny` nel frontmatter: con OpenCode il divieto è nelle permissioni, non solo nei prompt. |
+| `reviewer-movimenti` | `.opencode/agent/reviewer-movimenti.md` | Parte **da solo**: la sua `description` dice in quali richieste interviene e in quali no. Nessuno lo nomina. |
+| `reviewer-importi` | `.opencode/agent/reviewer-importi.md` | Idem, sul perimetro saldi/conti/clienti/AML. |
+| `reviewer-api` | `.opencode/agent/reviewer-api.md` | Idem, sul perimetro sicurezza/endpoint REST. |
+| Skill `review-report` | `.opencode/skills/review-report/SKILL.md` | Formato di uscita unico dei tre: il reviewer la legge con `Read` all'inizio della review; in OpenCode si carica anche con `@review-report`. |
+| Permissioni dei reviewer | `.opencode/agent/reviewer-*.md` | `edit: deny`, `bash: deny`, `task: deny`, `webfetch: deny` nel frontmatter: con OpenCode il divieto di scrittura è nelle permissioni, non solo nei prompt. |
+| Guard di scrittura (ex hook Claude Code) | `.opencode/scripts/guard-reviewer-write.py` | **Non montato**: era l'hook `PreToolUse` di `.claude/settings.json`, cartella eliminata. Con OpenCode il presidio è nelle permissioni qui sopra; lo script resta per la prova qui sotto. |
+| Audit strumenti (ex hook Claude Code) | `.opencode/scripts/log-tool.py` | **Non montato**: l'hook `PostToolUse` esisteva solo in Claude Code. Gli eventi finiscono in `~/.claude-audit/` quando Claude Code monta l'hook. |
+| Interrogatorio dell'audit | `.opencode/scripts/audit-query.py` | `python .opencode/scripts/audit-query.py --latest --summary` |
+| Prova del presidio | `.opencode/scripts/test-guard-reviewer-write.py` | `python .opencode/scripts/test-guard-reviewer-write.py [output.md]` → evidenza in `docs/run-traces/02-write-block.md` |
 | Run trace del routing | `docs/run-traces/01-routing.md` | Una sessione, due richieste di perimetri diversi, due reviewer diversi partiti da soli. |
 
-`.claude/agents/` è la sorgente dei tre reviewer; `.opencode/agent/` ne tiene le copie con il frontmatter delle permissioni di OpenCode.
+I tre reviewer vivono in `.opencode/agent/`: un solo posto per il lavoro, con il frontmatter delle permissioni di OpenCode.
 
 ### La regola con cui ho separato i perimetri
 
@@ -130,7 +130,7 @@ Un file sta **in esattamente uno** dei tre perimetri, o in nessuno:
 | Movimenti | `src/main/java/com/lipari/bank/movement/**` | `reviewer-movimenti` |
 | Importi e AML | `src/main/java/com/lipari/bank/account/**`, `src/main/java/com/lipari/bank/customer/**`, `src/main/resources/**` | `reviewer-importi` |
 | API e sicurezza | `src/main/java/com/lipari/bank/security/**`, `src/main/java/com/lipari/bank/web/**`, `src/main/java/com/lipari/bank/common/**` | `reviewer-api` |
-| Nessuno dei tre | `README.md`, `pom.xml`, `Dockerfile`, `src/test/**`, `.claude/`, `.opencode/` | — |
+| Nessuno dei tre | `README.md`, `pom.xml`, `Dockerfile`, `src/test/**`, `.opencode/` | — |
 
 **Il caso difficile** è la richiesta che tocca più perimetri (es. "controlla il trasferimento *e* la soglia AML"):
 
@@ -145,10 +145,10 @@ Il perimetro decide il file, non le parole della richiesta: un file che contiene
 
 | Cosa ho ereditato | Cosa ho cambiato | Perché |
 |---|---|---|
+| `.claude/settings.json` (hook `PreToolUse`/`PostToolUse` di Claude Code) | **Eliminata con tutta la cartella `.claude/`** | Il lavoro doveva stare in `.opencode/`: gli hook Claude Code non hanno equivalente qui e il divieto di scrittura è presidiato dalle permissioni dei tre agent |
+| `.claude/skills/review-report/` e `.claude/scripts/` (guard, test-guard, log-tool, audit-query) | **Spostati in `.opencode/skills/` e `.opencode/scripts/`** | Un solo posto per il lavoro: skill e script hanno trovato la loro casa nativa in `.opencode/` |
 | `.claude/agents/code-reviewer.md` e `.opencode/agent/code-reviewer.md` (un reviewer generico unico) | **Eliminati** | Un solo reviewer generico non aveva perimetro: rimpiazzati dai tre con descrizioni disgiunte |
-| `.claude/settings.json` (solo hook `PostToolUse` di audit) | **Aggiunto l'hook `PreToolUse`** con `guard-reviewer-write.py` | Il divieto di scrittura va presidiato a livello di strumento, non solo dichiarato nei prompt |
 | `.opencode/opencode.json` (`$schema` con `";,`, `model: big-pickle`) | **Corretti entrambi** | La riga di schema non era JSON valido e `big-pickle` senza prefisso provider non esisteva: OpenCode non partiva |
-| `.claude/scripts/log-tool.py`, `.claude/scripts/audit-query.py` | **Invariati** | L'audit ereditato funziona e non c'era motivo di toccarlo |
 | `src/**`, `pom.xml`, `Dockerfile`, `docker-compose.yml` | **Invariati** | La codebase bersaglio resta intatta: i reviewer devono trovare i difetti da soli |
 
 ---

@@ -16,7 +16,7 @@ Ora:
     con 0, cosi' Claude Code non blocca la sessione.
 
 La domanda "quali strumenti ha usato il reviewer su questa PR" si risponde
-con .claude/scripts/audit-query.py, non con un grep manuale.
+con .opencode/scripts/audit-query.py, non con un grep manuale.
 """
 import datetime
 import json

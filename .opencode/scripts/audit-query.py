@@ -5,11 +5,11 @@ Risponde alla domanda per cui l'hook esiste: "quali strumenti ha usato il
 reviewer su questa review/PR?", senza grep manuale su un file unico.
 
 Esempi:
-  python .claude/scripts/audit-query.py --latest
-  python .claude/scripts/audit-query.py --latest --summary
-  python .claude/scripts/audit-query.py --latest --file movement
-  python .claude/scripts/audit-query.py --session e7a2787d --tool Read,Grep
-  python .claude/scripts/audit-query.py --list
+  python .opencode/scripts/audit-query.py --latest
+  python .opencode/scripts/audit-query.py --latest --summary
+  python .opencode/scripts/audit-query.py --latest --file movement
+  python .opencode/scripts/audit-query.py --session e7a2787d --tool Read,Grep
+  python .opencode/scripts/audit-query.py --list
 
 Uscita: JSONL (un evento per riga). Con --summary o --list: tabella.
 """

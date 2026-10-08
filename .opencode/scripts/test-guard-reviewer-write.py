@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Prova del presidio su .claude/scripts/guard-reviewer-write.py.
+"""Prova del presidio su .opencode/scripts/guard-reviewer-write.py.
 
 Alimenta lo script hook con i payload che Claude Code gli passerebbe e
 riporta, caso per caso, se il blocco e' scattato. Stampa Markdown su stdout:
 e' pensato per finire in docs/run-traces/02-write-block.md.
 
-Uso:  python .claude/scripts/test-guard-reviewer-write.py [output.md]
+Uso:  python .opencode/scripts/test-guard-reviewer-write.py [output.md]
 Uscita: 0 se tutti i casi combaciano, 1 altrimenti.
 Se e' indicato un file, il Markdown viene scritto li' in UTF-8.
 """
@@ -69,8 +69,8 @@ def main():
         out.write(line + "\n")
 
     emit("# Prova del presidio: hook PreToolUse sui tre reviewer\n")
-    emit("Script: `.claude/scripts/guard-reviewer-write.py`")
-    emit("Comando: `python .claude/scripts/test-guard-reviewer-write.py`\n")
+    emit("Script: `.opencode/scripts/guard-reviewer-write.py`")
+    emit("Comando: `python .opencode/scripts/test-guard-reviewer-write.py`\n")
     emit("| caso | chiamante | strumento | atteso | ottenuto | esito |")
     emit("|---|---|---|---|---|---|")
 

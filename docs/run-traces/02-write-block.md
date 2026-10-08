@@ -1,7 +1,7 @@
 # Prova del presidio: hook PreToolUse sui tre reviewer
 
-Script: `.claude/scripts/guard-reviewer-write.py`
-Comando: `python .claude/scripts/test-guard-reviewer-write.py`
+Script: `.opencode/scripts/guard-reviewer-write.py`
+Comando: `python .opencode/scripts/test-guard-reviewer-write.py`
 
 | caso | chiamante | strumento | atteso | ottenuto | esito |
 |---|---|---|---|---|---|
@@ -44,13 +44,15 @@ Casi totali: 29 — bloccati come previsto: 15 — fallimenti: 0
 Invariato per tutto il resto: la sessione principale e gli altri subagent
 non ricevono nessuna decisione dall'hook, quindi continuano a funzionare.
 
-## Invocazione reale dell'hook (path con spazi)
+## Invocazione reale dello script (path con spazi)
 
-Esecuzione dello script **con lo stesso comando dichiarato in `.claude/settings.json`**, con
-`$CLAUDE_PROJECT_DIR` sostituito dal percorso reale del progetto (che contiene spazi):
+Esecuzione con lo stesso comando con cui l'hook `PreToolUse` lo montava in
+`.claude/settings.json` (cartella poi eliminata: con OpenCode il divieto di
+scrittura è nelle `permission: edit: deny` dei tre agent), con
+`$CLAUDE_PROJECT_DIR` sostituito dal percorso reale del progetto, che contiene spazi:
 
 ```text
-python "C:\users\Alessandra Sergi\Desktop\AI Agentic\progetto-di-partenza\.claude\scripts\guard-reviewer-write.py"
+python "C:\users\Alessandra Sergi\Desktop\AI Agentic\progetto-di-partenza\.opencode\scripts\guard-reviewer-write.py"
 ```
 
 | payload | esito | exit |
