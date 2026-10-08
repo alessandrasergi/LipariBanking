@@ -1,6 +1,18 @@
 {
   "model": "sonnet",
   "hooks": {
+    "PreToolUse": [
+      {
+        "_comment": "I tre reviewer non possono scrivere: il divieto e' presidiato qui, non solo nei system prompt.",
+        "matcher": "Edit|Write|NotebookEdit|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/scripts/guard-reviewer-write.py\" || exit 1"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "_comment": "Gino: mi serviva per vedere cosa stava usando durante le review.",
